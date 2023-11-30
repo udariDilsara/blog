@@ -115,6 +115,7 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                    
                     </div>
 
                     <!-- Responsive Settings Options -->

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -43,10 +44,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function posts():HasMany{
+    public function posts(): HasMany
+    {
 
         return $this->hasMany(Post::class);
-
     }
-    
+    public function comments(): HasMany
+    {
+
+        return $this->hasMany(Comment::class);
+    }
+    public function likes(): HasMany
+    {
+
+        return $this->hasMany(Like::class);
+    }
 }
