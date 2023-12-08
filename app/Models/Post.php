@@ -12,18 +12,20 @@ class Post extends Model
 {
     use HasFactory;
     protected $fillable = [
+        //'check_box',
         'user_id',
         'post_title',
         'post_body',
-        
+        'shedule_date',
+
     ];
-    public function comments():HasMany{
+    public function comments(): HasMany
+    {
 
         return $this->hasMany(Comment::class);
-
     }
-    public function user():BelongsTo{
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
-
 }

@@ -16,16 +16,44 @@ defineProps({
   },
   comments: {
     type: Array
-  }
+  },
   // postId: {
   //   type: Number
   // }
 
 });
-const form = useForm({
-  comment_body: "",
 
-});
+// methods({
+//   async deletePost(postId) {
+//     try {
+//       // Make an API request to delete the post
+//       const response = await axios.delete(`/api/posts/${postId}`);
+
+//       // Handle success, e.g., show a message or update the UI
+//       console.log('Post deleted successfully', response.data);
+
+//       // Optionally, update your component's state or perform other actions
+//     } catch (error) {
+//       // Handle errors, e.g., show an error message
+//       console.error('Error deleting post', error);
+
+//       // Optionally, update your component's state or perform other error-related actions
+//     }
+//   },
+// });
+
+//const { $inertia } = usePage();
+//onst deletePost = async (postId) => {
+
+// Make an API request to delete the post
+//const response = await $inertia.delete(`http://localhost:8000/api/posts/${postId}`);
+
+// Handle success, e.g., show a message or update the UI
+// console.log('Post deleted successfully', response.data);
+
+// Optionally, update your component's state or perform other actions
+
+//};
 
 
 </script>
@@ -72,47 +100,19 @@ const form = useForm({
               <Link :href="route('post.destroy', { post: post })" method="delete" as="button"
                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Delete
-
               </Link>
-            </div>
-
-            <div class="px-16 py-2 flex">
-              <form @submit.prevent="form.post(route('comment.store', { postId: post.id }))" class="mt-6 space-y-6">
-                <!-- <form class="mt-6 space-y-6"> -->
-
-                <div>
-                  <InputLabel for="comment_body" value="Comment Body" />
-
-                  <TextInput id="comment_body" type="text" class="mt-1 block w-full" v-model="form.comment_body"
-                    required />
-                  <PrimaryButton>Send</PrimaryButton>
-                </div>
-              </form>
-            </div>
-            <div class="px-16 py-2 flex">
-              <Link :href="route('comment.index', { postId: post.id })" method="get" as="button"
+              <!-- <Link :href="`http://localhost:8000/post/${post}/delete`" method="delete" as="button"
+                
                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Get Comments
-
-              </Link>
-              <!-- <a :href="route('comment.index', { postId: post.id })">commment</a> -->
-            </div>
-            <div>
-              {{ comments }}
-              <!-- <CommentList v-if="viewComments.includes(post.id)" :comments="comments" /> -->
-              <!-- <CommentList v-if="post.showComments" :comments="post.comments" /> -->
-              <!-- <CommentList :comments="comments.filter(comment => comment.post_id === post.id)" /> -->
-              <!-- <CommentList :comment="comments" :post-id="post.id" /> -->
-              <!-- <CommentList :comment="comments" /> -->
-              <AllComments :comments="comments" />
-
+              Delete
+              </Link> -->
+              <!-- <button @click="deletePost(route('post.destroy', { post: post }))"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Delete
+              </button> -->
             </div>
           </div>
-
-
         </div>
-
-
       </div>
 
 

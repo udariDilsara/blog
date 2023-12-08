@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            //$table->boolean('check_box');
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('post_title');
-            $table->string('post_body');
+            $table->text('post_body');
+            $table->date('shedule_date');
             //$table->string('image');
             $table->timestamps();
         });

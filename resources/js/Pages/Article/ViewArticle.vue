@@ -1,27 +1,62 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, useForm, Head, usePage } from '@inertiajs/vue3';
-import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import CommentList from '@/Pages/Comment/CommentList.vue';
-//import CommentList from '@/Comment/CommentList.vue';
-defineProps({
+
+import axios from 'axios';
+import { onMounted } from 'vue';
+import { reactive } from 'vue';
+import { ref } from 'vue';
+const props = defineProps({
     post: {
         type: Object
     },
-    comments: {
-        type: Array
-    }
+    // comments: {
+    //     type: Array
+    // }
 });
-
+let postCommentList = reactive([])
 const user = usePage().props.auth.user;
+let commentsLoading = ref(false)
 
 const form = useForm({
     // post_id: props.posts.post_id,
     comment_body: ""
 });
+const getComments = async () => {
+    try {
+        commentsLoading.value = true
+        const response = await axios.get(route('comment.index', { postId: props.post.id }))
+        postCommentList = response.data.comments
+        commentsLoading.value = false
+    } catch (error) {
+        console.log(error, "1");
+    }
+
+    //console.log(props.post.id, response, postCommentList);
+}
+const postComments = async () => {
+    try {
+        const response = await axios.post(route('comment.store', { postId: props.post.id }), form);
+        console.log(response, route('comment.store', { postId: props.post.id }));
+        form.comment_body = ""
+        getComments()
+
+    } catch (error) {
+        console.log(error, "2");
+    }
+}
+const loadData = async () => {
+
+}
+onMounted(() => {
+    getComments()
+})
+
+
+
 </script>
 
 <template>
@@ -44,14 +79,16 @@ const form = useForm({
 
         </div>
         <div class="px-16 py-2 flex">
-            <form @submit.prevent="form.post(route('comment.store', { postId: post.id }))" class="mt-6 space-y-6">
+            <form class="mt-6 space-y-6">
 
 
                 <div>
                     <InputLabel for="comment_body" value="Comment Body" />
 
                     <TextInput type="text" class="mt-1 block w-full" v-model="form.comment_body" required />
-                    <PrimaryButton>Send</PrimaryButton>
+                    <!-- <PrimaryButton >Send</PrimaryButton> -->
+                    <button type="button" @click="postComments()">Send</button>
+                    <p v-if="commentsLoading">Loading </p>
                 </div>
 
             </form>
@@ -59,8 +96,8 @@ const form = useForm({
         <div class="px-16 py-2 flex">
             <div class="flex items-center gap-4">
 
-                <!-- <CommentList :comment="comments" /> -->
-                <div v-for="comment in comments" :key="comment.id" class="mt-6 space-y-6">
+                <CommentList :comments="postCommentList" @comment-changed="getComments()" />
+                <!-- <div v-for="comment in comments" :key="comment.id" class="mt-6 space-y-6">
                     <div>
                         <div>
                             <h1>user Name:</h1>
@@ -79,8 +116,9 @@ const form = useForm({
                             Delete
                             </Link>
                         </div>
+
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- <CommentList></CommentList> -->

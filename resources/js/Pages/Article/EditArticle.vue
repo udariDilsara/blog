@@ -18,7 +18,9 @@ const props = defineProps({
 
 const form = useForm({
     post_title: props.post.post_title,
-    post_body: props.post.post_body
+    post_body: props.post.post_body,
+    shedule_date: props.post.shedule_date,
+    //check_box: false,
 });
 </script>
 
@@ -38,6 +40,18 @@ const form = useForm({
 
             <form @submit.prevent="form.put(route('post.update', { post: post }))" class="mt-6 space-y-6">
                 <div>
+                    <div>
+                        <!-- <input type="checkbox" v-model="form.check_box"> -->
+                        <input type="checkbox" id="check_box" v-model="form.check_box" />
+                        <label for="check_box">Check Box</label>
+                        <InputError class="mt-2" :message="form.errors.check_box" />
+                    </div>
+                    <div>
+                        <InputLabel for="shedule_date" value="Shedule Date" />
+                        <input type="date" v-model="form.shedule_date">
+                        <InputError class="mt-2" :message="form.errors.shedule_date" />
+                    </div>
+
                     <InputLabel for="post_title" value="Post Title" />
 
                     <TextInput id="post_title" type="text" class="mt-1 block w-full" v-model="form.post_title" required
@@ -49,8 +63,8 @@ const form = useForm({
                 <div>
                     <InputLabel for="post_body" value="Post Body" />
 
-                    <TextInput id="post_body" type="text" class="mt-1 block w-full" v-model="form.post_body" required />
-
+                    <!-- <TextInput id="post_body" type="text" class="mt-1 block w-full" v-model="form.post_body" required /> -->
+                    <textarea v-model="form.post_body" required cols="30" rows="10"></textarea>
                     <InputError class="mt-2" :message="form.errors.post_body" />
                 </div>
 

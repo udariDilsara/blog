@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,9 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/post//{post}/edit', [PostController::class, 'edit'])->name('post.edit');
     Route::put('/post/{post}/update', [PostController::class, 'update'])->name('post.update');
     Route::delete('/post/{post}/delete', [PostController::class, 'delete'])->name('post.destroy');
-    Route::get('/post/{postId}/view', [PostController::class, 'getView'])->name('post.view');
+    Route::get('/post/{postId}/view', [PostController::class, 'show'])->name('post.view');
 
     //Route::get('/comment', [CommentController::class, 'create'])->name('comment.create');
+
     Route::post('/comment/{postId}/store', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/comment/{postId}/index', [CommentController::class, 'index'])->name('comment.index');
     // Route::get('/comment/index', [CommentController::class, 'indexx'])->name('comment.indexx');
@@ -56,6 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/comment/{id}/edit', [CommentController::class, 'edit'])->name('comment.edit');
     Route::put('/comment/{id}/update', [CommentController::class, 'update'])->name('comment.update');
     Route::delete('/comment/{id}/destroy', [CommentController::class, 'destroy'])->name('comment.destroy');
+
+    Route::post('/like/{postId}/store', [LikeController::class, 'store'])->name('like.store');
 });
 
 require __DIR__ . '/auth.php';

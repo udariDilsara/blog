@@ -8,15 +8,20 @@ import { Link, useForm } from '@inertiajs/vue3';
 const props = defineProps({
     comment: {
         type: Object
-    }
+    },
+    // commentId: {
+    //     type: Number
+    // }
 });
 
 
 
 const form = useForm({
-    //post_title: props.post.post_title,
     comment_body: props.comment.comment_body
+    // comment_body: props.comment ? props.comment.comment_body : ''
 });
+
+
 
 </script>
 
@@ -31,26 +36,27 @@ const form = useForm({
                         <p class="mt-1 text-sm text-gray-600">
                             Edit your commment body.
                         </p>
+                        {{ comment }}
                     </header>
                     <div class="px-16 py-2 flex">
-                        <form @submit.prevent="form.put(route('comment.update', { id: comment.id }))"
-                            class="mt-6 space-y-6">
-                            <!-- <form action="#"> -->
+                        <!-- <form @submit.prevent="form.put(route('comment.update', { id: comment.id }))"
+                            class="mt-6 space-y-6"> -->
+                        <form action="#">
 
                             <div>
                                 <InputLabel for="comment_body" value="Comment Body" />
 
-                                <TextInput id="comment_body" type="text" class="mt-1 block w-full"
+                                <TextInput id="comment_body" name="comment_body" type="text" class="mt-1 block w-full"
                                     v-model="form.comment_body" required />
                                 <div class="flex items-center gap-4 mt-2">
                                     <PrimaryButton>Send</PrimaryButton>
                                 </div>
 
-                                <div class="px-16 py-6 flex mb-4">
+                                <!-- <div class="px-16 py-6 flex mb-4">
                                     <Link as="button"
                                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                         :href="route('post.view', { postId: comment.post_id })">Back</Link>
-                                </div>
+                                </div> -->
                             </div>
                         </form>
                     </div>

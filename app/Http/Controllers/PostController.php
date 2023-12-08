@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostValidationRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -38,16 +39,16 @@ class PostController extends Controller
         return Inertia::render("Article/ViewArticle", ['post' => $post, 'comments' => $comments]);
     }
 
-    // public function show($postId)
-    // {
-    //     $post = Post::with('comments')->findOrFail($postId);
-    //     $comments = $post->comments;
+    public function show($postId)
+    {
+        $post = Post::with('comments')->findOrFail($postId);
+        $comments = $post->comments;
 
-    //     return Inertia::render('Article/ViewPost', [
-    //         'post' => $post,
-    //         'comments' => $comments,
-    //     ]);
-    // }
+        return Inertia::render('Article/ViewArticle', [
+            'post' => $post,
+            'comments' => $comments,
+        ]);
+    }
 
     public function getPostlist()
     {
@@ -61,20 +62,23 @@ class PostController extends Controller
     //     //return Inertia::render("Article/ViewArticle", ['comments' => $comments]);
     //     return Redirect::route('post.postlist')->with('comments', $comments);
     // }
-    public function store(Request $request)
+    public function store(PostValidationRequest $request)
     {
         //dd( Auth::id());
 
-        $request->validate([
-            'post_title' => 'required|string',
-            'post_body' => 'required|string',
-        ]);
+        // $request->validate([
+        //     'post_title' => 'required|string',
+        //     'post_body' => 'required|string',
+        // ]);
+        $request->validated();
 
         $id = Auth::id();
         Post::create([
+            // 'check_box' => $request->input('check_box'),
             'user_id' => $id,
             'post_title' => $request->input('post_title'),
             'post_body' => $request->input('post_body'),
+            'shedule_date' => $request->input('shedule_date')
         ]);
 
         return redirect()->route('post.create');
@@ -85,18 +89,21 @@ class PostController extends Controller
         return Inertia::render("Article/EditArticle", ['post' => $post]);
         //return view('task.edit',['task'=>$task]);
     }
-    public function update(Post $post, Request $request)
+    public function update(Post $post, PostValidationRequest $request)
     {
-        $request->validate([
-            'post_title' => 'required|string',
-            'post_body' => 'required|string',
-        ]);
+        // $request->validate([
+        //     'post_title' => 'required|string',
+        //     'post_body' => 'required|string',
+        // ]);
+        $request->validated();
         //dd($post,$request);
         $id = Auth::id();
         $post->update([
             'user_id' => $id,
             'post_title' => $request->input('post_title'),
             'post_body' => $request->input('post_body'),
+            'shedule_date' => $request->input('shedule_date')
+
         ]);
         return redirect()->route('post.postlist');
     }
@@ -104,5 +111,6 @@ class PostController extends Controller
     {
         $post->delete();
         return redirect()->route('post.postlist');
+        //Sreturn response()->json(["succes" => true]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentValidationRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
@@ -20,9 +21,9 @@ class CommentController extends Controller
         $post = Post::findOrFail($postId);
         $comments = $post->comments;
         //return Inertia::render("Article/ViewArticle", ['comments' => $comments]);
-        return Inertia::render("Comment/CommentList", ['comments' => $comments]);
+        //return Inertia::render("Comment/CommentList", ['comments' => $comments]);
         //return redirect()->route('post.postlist');
-        //return response()->json(['comments' => $comments]);
+        return response()->json(['comments' => $comments]);
     }
 
     //this is wrong. not working 
@@ -46,17 +47,16 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $postId)
+    public function store(CommentValidationRequest $request, $postId)
     {
 
         $user_id = Auth::id();
-        //$post =Post::findOrFail($postId);
-        //$postId = $post->id;
-        //dd($post_id);
-        $request->validate([
 
-            'comment_body' => 'required|string',
-        ]);
+        // $request->validate([
+
+        //     'comment_body' => 'required|string',
+        // ]);
+        $request->validated();
 
 
         Comment::create([
@@ -65,7 +65,7 @@ class CommentController extends Controller
             'comment_body' => $request->input('comment_body'),
         ]);
 
-        return redirect()->route('post.view', ['postId' => $postId]);
+        return response()->json(['message' => "save success"], 201);
     }
 
     /**
@@ -84,7 +84,8 @@ class CommentController extends Controller
     public function edit(int $id)
     {
         $comment = Comment::findOrFail($id);
-        return Inertia::render("Comment/EditComment", ['comment' => $comment]);
+        //return Inertia::render("Comment/EditComment", ['comment' => $comment]);
+        return response()->json(['comment' => $comment]);
     }
     // public function edit(Comment $comment)
     // {
@@ -95,11 +96,12 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(CommentValidationRequest $request, int $id)
     {
-        $request->validate([
-            'comment_body' => 'required|string',
-        ]);
+        // $request->validate([
+        //     'comment_body' => 'required|string',
+        // ]);
+        $request->validated();
         $comment = Comment::findOrFail($id);
         $postId = $comment->post_id;
         $userId = Auth::id();
@@ -108,17 +110,20 @@ class CommentController extends Controller
             'post_id' => $postId,
             'comment_body' => $request->input('comment_body'),
         ]);
-        return redirect()->route('post.view', ['postId' => $postId]);
+        //return redirect()->route('post.view', ['postId' => $postId]);
+        return response()->json(['message' => "update success", $postId], 201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         $comment = Comment::findOrFail($id);
         $postId = $comment->post_id;
         $comment->delete();
-        return redirect()->route('post.view', ['postId' => $postId]);
+
+        //return redirect()->route('post.view', ['postId' => $postId]);
+        return response()->json(['message' => "delete success", $postId], 201);
     }
 }
