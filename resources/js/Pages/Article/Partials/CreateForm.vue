@@ -21,7 +21,7 @@ const form = useForm({
     post_body: "",
     shedule_date: '',
     //shedule_date: new Date().toISOString().split('T')[0],
-    check_box: "",
+    check_box: false,
 
 });
 </script>

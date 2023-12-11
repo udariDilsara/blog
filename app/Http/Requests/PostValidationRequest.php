@@ -22,10 +22,10 @@ class PostValidationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'check_box' => 'required|accepted',
-            'shedule_date' => 'exclude_unless:check_box,true|required|date',
-            'post_title' => 'exclude_unless:check_box,true|required|string',
-            'post_body' => 'exclude_unless:check_box,true|required|string',
+            'check_box' => 'sometimes|boolean|max:255',
+            'shedule_date' => 'required_if:check_box,true|nullable|date',
+            'post_title' => 'required|string',
+            'post_body' => 'required|string',
 
 
         ];
@@ -33,10 +33,10 @@ class PostValidationRequest extends FormRequest
     public function messages()
     {
         return [
-            'check_box.required' => 'first checkbox the check box ',
-            'post_body.required' => 'First enter the Post body',
-            'post_title.required' => 'First enter the Post title',
-            'post_title.required' => 'First enter the Post date',
+            'check_box.required' => 'First check the check box ',
+            'post_body.required' => 'Enter the Post body',
+            'post_title.required' => 'Enter the Post title',
+            'shedule_date.required' => 'Enter the Post date',
 
 
 
